@@ -40,16 +40,7 @@ void RippleAddress::setSeed(uint128 hash)
 
 uint128 RippleAddress::getSeed() const
 {
-    switch (nVersion) {
-    case VER_NONE:
-        throw std::runtime_error("unset source - getSeed");
-
-    case VER_FAMILY_SEED:
-        return uint128(vchData);
-
-    default:
-        throw std::runtime_error(str(boost::format("bad source: %d") % int(nVersion)));
-    }
+    return uint128(vchData);
 }
 
 static RippleAddress createGeneratorPublic(const RippleAddress& naSeed)
@@ -62,20 +53,7 @@ static RippleAddress createGeneratorPublic(const RippleAddress& naSeed)
 
 const std::vector<unsigned char>& RippleAddress::getAccountPublic() const
 {
-    switch (nVersion) {
-    case VER_NONE:
-        throw std::runtime_error("unset source - getAccountPublic");
-
-    case VER_ACCOUNT_ID:
-        throw std::runtime_error("public not available from account id");
-        break;
-
-    case VER_ACCOUNT_PUBLIC:
-        return vchData;
-
-    default:
-        throw std::runtime_error(str(boost::format("bad source: %d") % int(nVersion)));
-    }
+    return vchData;
 }
 
 void RippleAddress::setAccountPublic(const uchar_vector& generator, int seq)
