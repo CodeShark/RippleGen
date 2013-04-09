@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
     uint64_t count = 0;
 
     cout << endl << "Generating seed...";
-    cout << endl << "  pattern: " << pattern << flush;
+    cout << endl << "  pattern: " << pattern << endl << endl;
 
     RippleAddress naSeed;
     RippleAddress naAccount;
@@ -30,15 +30,15 @@ int main(int argc, char* argv[])
         naAccount.setAccountPublic(naGenerator, 0);
         account_id = naAccount.humanAccountID();
         count++;
-        if (count % 10000)
+        if (count % 10000 == 0)
             cout << "  Tested " << count << " seeds so far." << endl;
         key++;
     } while (account_id.substr(0, pattern.size()) != pattern);
 
-    cout << endl << "Done!";
+    cout << endl << endl << "Done!";
     cout << endl << "  master seed:     " << naSeed.humanSeed();
     cout << endl << "  master seed hex: " << naSeed.getSeed().ToString();
-    cout << endl << "  account id:      " << account_id << endl;
+    cout << endl << "  account id:      " << account_id << endl << endl;
 
     return 0;
 }
