@@ -1,3 +1,13 @@
+///////////////////////////////////////////////////////////////////////////////////
+//
+// ripplegen.cpp 
+//
+// Copyright (c) 2013 Eric Lombrozo
+//  all rights reserved
+//
+// A simple multithreaded vanity id generator for the ripple p2p network.
+//
+
 #include <RippleAddress.h>
 #include <iostream>
 #include <stdint.h>
