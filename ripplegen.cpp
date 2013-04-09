@@ -24,6 +24,21 @@ bool fDone = false;
 uint64_t start_time;
 uint64_t total_searched;
 
+const char* ALPHABET = "rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz";
+
+char charHex(int iDigit)
+{
+    return iDigit < 10 ? '0' + iDigit : 'A' - 10 + iDigit;
+}
+
+void getRand(unsigned char *buf, int num)
+{
+    if (RAND_bytes(buf, num) != 1)
+    {
+        assert(false);
+        throw std::runtime_error("Entropy pool not seeded");
+    }
+}
 
 void LoopThread(unsigned int n, string* ppattern, string* pmaster_seed, string* pmaster_seed_hex, string* paccount_id)
 {
@@ -39,8 +54,8 @@ void LoopThread(unsigned int n, string* ppattern, string* pmaster_seed, string* 
     uint64_t last_count = 0;
     do {
         naSeed.setSeed(key);
-        RippleAddress naGenerator = RippleAddress::createGeneratorPublic(naSeed);
-        naAccount.setAccountPublic(naGenerator, 0);
+        RippleAddress naGenerator = createGeneratorPublic(naSeed);
+        naAccount.setAccountPublic(naGenerator.getAccountPublic(), 0);
         account_id = naAccount.humanAccountID();
         count++;
         if (count % UPDATE_ITERATIONS == 0) {

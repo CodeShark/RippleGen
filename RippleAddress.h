@@ -25,7 +25,10 @@ class RippleAddress : public CBase58Data
 public:
     void setSeed(uint128 hash);
     uint128 getSeed() const;
+    const std::vector<unsigned char>& getAccountPublic() const;
     void setAccountPublic(const uchar_vector& generator, int seq);
+    uint160 getAccountID() const;
+    void setAccountID(const uint160& hash160);
     std::string humanAccountID() const;
     std::string humanSeed() const;
 };
@@ -57,10 +60,51 @@ static RippleAddress createGeneratorPublic(const RippleAddress& naSeed)
     return naNew;
 }
 
+const std::vector<unsigned char>& RippleAddress::getAccountPublic() const
+{
+    switch (nVersion) {
+    case VER_NONE:
+        throw std::runtime_error("unset source - getAccountPublic");
+
+    case VER_ACCOUNT_ID:
+        throw std::runtime_error("public not available from account id");
+        break;
+
+    case VER_ACCOUNT_PUBLIC:
+        return vchData;
+
+    default:
+        throw std::runtime_error(str(boost::format("bad source: %d") % int(nVersion)));
+    }
+}
+
 void RippleAddress::setAccountPublic(const uchar_vector& generator, int seq)
 {
     CKey    pubkey  = CKey(generator, seq);
     SetData(VER_ACCOUNT_PUBLIC, pubkey.GetPubKey());
+}
+
+uint160 RippleAddress::getAccountID() const
+{
+    switch (nVersion) {
+    case VER_NONE:
+        throw std::runtime_error("unset source - getAccountID");
+
+    case VER_ACCOUNT_ID:
+        return uint160(vchData);
+
+    case VER_ACCOUNT_PUBLIC:
+        // Note, we are encoding the left.
+        return Hash160(vchData);
+
+    default:
+        throw std::runtime_error(str(boost::format("bad source: %d") % int(nVersion)));
+    }
+}
+
+void RippleAddress::setAccountID(const uint160& hash160)
+{
+    SetData(VER_ACCOUNT_ID, hash160.begin(), 20);
 }
 
 static boost::mutex rncLock;
@@ -80,7 +124,7 @@ std::string RippleAddress::humanAccountID() const
             return it->second;
         return rncMap[vchData] = ToString();
     }
-
+    
     case VER_ACCOUNT_PUBLIC:
     {
         RippleAddress   accountID;
