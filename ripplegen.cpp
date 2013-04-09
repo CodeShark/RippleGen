@@ -43,6 +43,7 @@ void LoopThread(unsigned int n, string* ppattern, string* pmaster_seed, string* 
             cout << "             Speed:          " << speed << " seeds/s" << endl << endl;
         }
         key++;
+        boost::this_thread::yield();
     } while ((account_id.substr(0, pattern.size()) != pattern) && !fDone);
 
     boost::unique_lock<boost::mutex> lock(mutex);
