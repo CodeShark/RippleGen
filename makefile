@@ -1,4 +1,4 @@
-SRC_PATH=/home/eric/NewCoin
+SRC_PATH=/home/rippled/NewCoin
 
 FILES = \
     ${SRC_PATH}/build/proto/ripple.pb.o \
@@ -114,7 +114,6 @@ FILES = \
     ${SRC_PATH}/build/obj/websocketpp/src/uri.o
 
 LIBS = \
-    -lboost_unit_test_framework \
     -pthread \
     -rdynamic \
     -lssl \

@@ -8,10 +8,11 @@
 // A simple multithreaded vanity id generator for the ripple p2p network.
 //
 
-#include <RippleAddress.h>
+#include "RippleAddress.h"
 #include <iostream>
 #include <stdint.h>
 #include <boost/thread.hpp>
+#include <openssl/rand.h>
 
 #define UPDATE_ITERATIONS 1000
 
@@ -22,6 +23,7 @@ bool fDone = false;
 
 uint64_t start_time;
 uint64_t total_searched;
+
 
 void LoopThread(unsigned int n, string* ppattern, string* pmaster_seed, string* pmaster_seed_hex, string* paccount_id)
 {
