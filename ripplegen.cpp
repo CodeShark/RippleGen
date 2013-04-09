@@ -7,6 +7,11 @@
 //
 // A simple multithreaded vanity id generator for the ripple p2p network.
 //
+//
+// Portions of the source were taken from the ripple and bitcoin reference
+// implementations, but they have been refactored as to minimize linkage
+// dependencies.
+//
 
 #include "RippleAddress.h"
 #include <iostream>
