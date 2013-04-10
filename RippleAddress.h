@@ -90,18 +90,13 @@ static boost::unordered_map< std::vector<unsigned char>, std::string > rncMap;
 
 std::string RippleAddress::humanAccountID() const
 {
-    return ToString();
     switch (nVersion) {
     case VER_NONE:
         throw std::runtime_error("unset source - humanAccountID");
 
     case VER_ACCOUNT_ID:
     {
-        boost::mutex::scoped_lock sl(rncLock);
-        boost::unordered_map< std::vector<unsigned char>, std::string >::iterator it = rncMap.find(vchData);
-        if (it != rncMap.end())
-            return it->second;
-        return rncMap[vchData] = ToString();
+        return ToString();
     }
     
     case VER_ACCOUNT_PUBLIC:
