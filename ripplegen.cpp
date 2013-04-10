@@ -72,13 +72,28 @@ void LoopThread(unsigned int n, uint64_t eta50, string* ppattern,
             last_count = count;
             uint64_t nSecs = time(NULL) - start_time;
             double speed = (1.0 * total_searched)/nSecs;
-            double eta50sec = eta50/speed;
+            const char* unit = "seconds";
+            double eta50f = eta50/speed;
+            if (eta50f > 100) {
+                unit = "minutes";
+                eta50f /= 60;
+
+                if (eta50f > 100) {
+                    unit = "hours";
+                    eta50f /= 60;
+
+                    if (eta50f > 48) {
+                        unit = "days";
+                        eta50f /= 24;
+                    }
+                }
+            }
 
             cout << "# Thread " << n << ": " << count << " seeds." << endl
-                 << "#           Speed:          " << speed << " seeds/s" << endl
+                 << "#           Speed:          " << speed << " seeds/second" << endl
                  << "#           Total Searched: " << total_searched << endl
-                 << "#           Total Time:     " << nSecs << "s" << endl
-                 << "#           ETA 50%:        " << eta50sec << "s" << endl
+                 << "#           Total Time:     " << nSecs << " seconds" << endl
+                 << "#           ETA 50%:        " << eta50f << " " << unit << endl
                  << "#           Last:           " << account_id << endl
                  << "#           Pattern:        " << pattern << endl
                  << "#" << endl;
