@@ -12,6 +12,8 @@
 // implementations, but they have been refactored as to minimize linkage
 // dependencies.
 //
+// Further changes are possible to dramatically improve performance.
+//
 
 #include "RippleAddress.h"
 #include <iostream>
