@@ -58,7 +58,7 @@ const std::vector<unsigned char>& RippleAddress::getAccountPublic() const
 
 void RippleAddress::setAccountPublic(const uchar_vector& generator, int seq)
 {
-    CKey    pubkey  = CKey(generator, seq);
+    CKey    pubkey(generator, seq);
     SetData(VER_ACCOUNT_PUBLIC, pubkey.GetPubKey());
 }
 
