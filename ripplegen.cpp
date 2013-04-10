@@ -103,7 +103,7 @@ void LoopThread(unsigned int n, uint64_t eta50, string* ppattern,
             }
 
             cout << "# Thread " << n << ": " << count << " seeds." << endl
-                 << "#           Speed:          " << speed << " seeds/second" << endl
+                 << "#           Total Speed:    " << speed << " seeds/second" << endl
                  << "#           Total Searched: " << total_searched << endl
                  << "#           Total Time:     " << nSecs << " seconds" << endl
                  << "#           ETA 50%:        " << eta50f << " " << unit << endl
