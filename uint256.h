@@ -246,8 +246,8 @@ public:
 		char* pOut	= reinterpret_cast<char*>(pn);
 		for (int i = 0; i < sizeof(pn); ++i)
 		{
-			*pOut = phexdigit[*psz++] << 4;
-			*pOut++ |= phexdigit[*psz++];
+			*pOut = phexdigit[(unsigned char)*psz++] << 4;
+			*pOut++ |= phexdigit[(unsigned char)*psz++];
 		}
 
 		assert(*psz == 0);

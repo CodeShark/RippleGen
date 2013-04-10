@@ -41,7 +41,7 @@ public:
 
     std::vector<unsigned char> GetPubKey() const
     {
-        unsigned int nSize = i2o_ECPublicKey(pkey, NULL);
+        int nSize = i2o_ECPublicKey(pkey, NULL);
         assert(nSize<=33);
         if (!nSize)
             throw std::runtime_error("CKey::GetPubKey() : i2o_ECPublicKey failed");
