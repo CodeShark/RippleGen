@@ -25,8 +25,8 @@ TODO:
       unlikely that two threads will end up overlapping in their
       search range, or that running the program multiple times with
       the same pattern will result in an overlap. But it's very cheap
-      to guarantee this. Moreover, the user could be allowed to
-      provide an initial search value either directly or as a
+      to guarantee this won't happen. Moreover, the user could be
+      allowed to provide an initial search value either directly or as a
       passphrase hash (although this can compromise security).
 
     - Support for wider pattern formats. Wildcards, ranges, or even
