@@ -47,7 +47,8 @@ void getRand(unsigned char *buf, int num)
     }
 }
 
-void LoopThread(unsigned int n, string* ppattern, string* pmaster_seed, string* pmaster_seed_hex, string* paccount_id)
+void LoopThread(unsigned int n, uint64_t eta50, string* ppattern,
+                string* pmaster_seed, string* pmaster_seed_hex, string* paccount_id)
 {
     RippleAddress naSeed;
     RippleAddress naAccount;
@@ -71,13 +72,15 @@ void LoopThread(unsigned int n, string* ppattern, string* pmaster_seed, string* 
             last_count = count;
             uint64_t nSecs = time(NULL) - start_time;
             double speed = (1.0 * total_searched)/nSecs;
+            double eta50sec = eta50/speed;
 
             cout << "# Thread " << n << ": " << count << " seeds." << endl
-                 << "#           Account ID      " << account_id << endl
-                 << "#           Pattern:        \"" << pattern << "\"" << endl
+                 << "#           Speed:          " << speed << " seeds/s" << endl
                  << "#           Total Searched: " << total_searched << endl
                  << "#           Total Time:     " << nSecs << "s" << endl
-                 << "#           Speed:          " << speed << " seeds/s" << endl
+                 << "#           ETA 50%:        " << eta50sec << "s" << endl
+                 << "#           Last:           " << account_id << endl
+                 << "#           Pattern:        " << pattern << endl
                  << "#" << endl;
         }
         key++;
@@ -96,6 +99,36 @@ void LoopThread(unsigned int n, string* ppattern, string* pmaster_seed, string* 
     *paccount_id = account_id;
 }
 
+
+// isPatternValid can be changed depending on encoding being used.
+bool isPatternValid(const string& pattern, string& msg)
+{
+    // Check for valid ripple account id.
+    // TODO: Implement it correctly
+    if (pattern.size() == 0) {
+        msg = "Pattern cannot be empty.";
+        return false;
+    }
+    if (pattern[0] != 'r') {
+        msg = "Pattern must begin with an 'r'.";
+        return false;
+    }
+    return true;
+}
+
+// eta50 = ceiling(1/log_2(n/(n-1))) where n = 58^length
+//   the minimum number of iterations such that there's at
+//   least a 50% chance of finding a match.
+uint64_t getEta50(const string& pattern)
+{
+    const uint64_t eta50[] = { 0, 0, 40, 2332, 135241, 7843997, 454951843, 26387206905ull,
+                               1530458000460ull, 8876654026661ull, 5148460713546319ull,
+                               298610721385686486ull, 17319421840369816160ull };
+    unsigned int len = pattern.size();
+    if (len > 12) return 0xffffffffffffffffull;
+    return eta50[len]; 
+}
+
 int main(int argc, char* argv[])
 {
     if (argc < 2) {
@@ -104,7 +137,13 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    // TODO: Validate pattern
+    string pattern = argv[1];
+    string msg;
+    if (!isPatternValid(pattern, msg)) {
+        cout << "# " << msg << endl
+             << "#" << endl;
+        return -2;
+    }
 
     unsigned int cpus = boost::thread::hardware_concurrency();
     unsigned int threads = (argc >= 3) ? strtoul(argv[2], NULL, 0) : cpus;
@@ -114,26 +153,25 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    cout << "# CPUs detected: " << cpus << endl;
-    cout << "# Running " << threads << " thread" << (threads == 1 ? "" : "s") << "..." << endl;
-
-    string pattern = argv[1];
-    cout << "#" << endl
-         << "# Generating seed for pattern \"" << pattern << "\"" << endl
+    cout << "# CPUs detected: " << cpus << endl
+         << "#" << endl
+         << "# Running " << threads << " thread" << (threads == 1 ? "" : "s") << "." << endl
+         << "#" << endl
+         << "# Generating seed for pattern \"" << pattern << "\"..." << endl
          << "#" << endl;
 
-    string master_seed, master_seed_hex, account_id;
+    uint64_t eta50 = getEta50(pattern);
 
     start_time = time(NULL);
-
+    string master_seed, master_seed_hex, account_id;
     vector<boost::thread*> vpThreads;
-    for (int i = 0; i < (int)threads; i++)
-        vpThreads.push_back(new boost::thread(LoopThread, i, &pattern, &master_seed, &master_seed_hex, &account_id));
+    for (unsigned int i = 0; i < threads; i++)
+        vpThreads.push_back(new boost::thread(LoopThread, i, eta50, &pattern, &master_seed, &master_seed_hex, &account_id));
 
-    for (int i = 0; i < (int)threads; i++)
+    for (unsigned int i = 0; i < threads; i++)
         vpThreads[i]->join();
    
-    for (int i = 0; i < (int)threads; i++)
+    for (unsigned int i = 0; i < threads; i++)
         delete vpThreads[i];
  
     cout << "#    master seed:     " << master_seed << endl
