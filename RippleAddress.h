@@ -85,9 +85,6 @@ void RippleAddress::setAccountID(const uint160& hash160)
     SetData(VER_ACCOUNT_ID, hash160.begin(), 20);
 }
 
-static boost::mutex rncLock;
-static boost::unordered_map< std::vector<unsigned char>, std::string > rncMap;
-
 std::string RippleAddress::humanAccountID() const
 {
     switch (nVersion) {
