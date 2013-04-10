@@ -90,6 +90,7 @@ static boost::unordered_map< std::vector<unsigned char>, std::string > rncMap;
 
 std::string RippleAddress::humanAccountID() const
 {
+    return ToString();
     switch (nVersion) {
     case VER_NONE:
         throw std::runtime_error("unset source - humanAccountID");

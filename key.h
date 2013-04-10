@@ -52,6 +52,11 @@ public:
         assert(vchPubKey.size()<=33);
         return vchPubKey;
     }
+
+    ~CKey()
+    {
+        EC_KEY_free(pkey);
+    }
 };
 
 static BIGNUM* makeHash(const uchar_vector& generator, int seq, BIGNUM* order)
