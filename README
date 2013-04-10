@@ -1,0 +1,49 @@
+
+                          R I P P L E G E N
+
+-----------------------------------------------------------------------------
+
+A multithreaded vanity account generating tool for the Ripple p2p network.
+
+Requires Boost and OpenSSL.
+
+-----------------------------------------------------------------------------
+
+TODO:
+    - Validate patterns correctly, make sure the user doesn't end
+      up waiting forever for a pattern that will never occur.
+
+    - Make it easier to plug in different alphabets and rules.
+
+    - Remove unused portions of source code.
+
+    - Improve performance by removing unnecessary branching,
+      excessive calls, unnecessary memory allocations and copies,
+      and replacing the elliptic curve library with something faster.
+
+    - The search space is sufficiently ample so that it is highly
+      unlikely that two threads will end up overlapping in their
+      search range, or that running the program multiple times with
+      the same pattern will result in an overlap. But it's very cheap
+      to guarantee this. Moreover, the user could be allowed to
+      provide an initial search value either directly or as a
+      passphrase hash (although this can compromise security).
+
+    - Support for wider pattern formats. Wildcards, ranges, or even
+      regexes.
+
+    - Support for coordinated searches across many machines.
+
+- Eric Lombrozo
+
+(Tip Jar: rEric5Q6297byt1PyM5EMx2X3qm9x9RrEb)
+
+-----------------------------------------------------------------------------
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+----------------------------------------------------------------------------
