@@ -126,6 +126,7 @@ EC_KEY* GenerateRootPubKey(BIGNUM* pubGenerator)
         return NULL;
     }
 
+    EC_POINT_free(pubPoint);
     return pkey;
 }
 
