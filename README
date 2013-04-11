@@ -7,6 +7,12 @@ A multithreaded vanity account generating tool for the Ripple p2p network.
 
 Requires Boost and OpenSSL.
 
+Build: ./make
+Run:   ./ripplegen [pattern] [threads]
+
+The threads parameter is optional. If omitted, the optimal value is selected
+depending on your hardware.
+
 -----------------------------------------------------------------------------
 
 TODO:
