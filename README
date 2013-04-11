@@ -24,6 +24,9 @@ TODO:
         make sure you only use characters from the base58 alphabet:
         123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz
 
+    - Provide a better indication of current speed (not just average speed)
+      and a speed breakdown per thread.
+
     - Make it easier to plug in different alphabets and rules.
 
     - Remove unused portions of source code.
