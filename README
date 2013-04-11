@@ -12,6 +12,11 @@ Requires Boost and OpenSSL.
 TODO:
     - Validate patterns correctly, make sure the user doesn't end
       up waiting forever for a pattern that will never occur.
+    
+      user tip: Try r?? and r??? and make sure they are found within a
+        reasonable amount of time before trying the full pattern and
+        make sure you only use characters from the base58 alphabet:
+        123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz
 
     - Make it easier to plug in different alphabets and rules.
 
