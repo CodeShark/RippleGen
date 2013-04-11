@@ -21,6 +21,9 @@ TODO:
       excessive calls, unnecessary memory allocations and copies,
       and replacing the elliptic curve library with something faster.
 
+    - Allow user to specify the seed and then search accounts for that
+      seed (right now uses a hardcoded index of 0 for each seed).
+
     - The search space is sufficiently ample so that it is highly
       unlikely that two threads will end up overlapping in their
       search range, or that running the program multiple times with
